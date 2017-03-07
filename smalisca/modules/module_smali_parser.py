@@ -187,7 +187,7 @@ class SmaliParser(ModuleBase):
                   otherwise False
 
         """
-        match = re.search("\.field\s+(?P<property>.*);", line)
+        match = re.search("\.field\s+(?P<property>.*)", line)
         if match:
             log.debug("\t\tFound property: %s" % match.group('property'))
             return match.group('property')
@@ -296,7 +296,13 @@ class SmaliParser(ModuleBase):
             dict: Returns a property object, otherwise None
 
         """
-        prop_info = data.split(" ")
+
+        key_val = data.split(' = ')
+        prop_info = key_val[0].split(' ')
+        val = None
+
+        if len(key_val) > 1:
+            val = key_val[1]
 
         # A field/property is usually saved in this form
         #  <name>:<type>
@@ -310,7 +316,10 @@ class SmaliParser(ModuleBase):
             'type': prop_name_split[1] if len(prop_name_split) > 1 else '',
 
             # Additional info (e.g. public static etc.)
-            'info': " ".join(prop_info[:-1])
+            'info': " ".join(prop_info[:-1]),
+
+            # Value
+            'value': val
         }
 
         return p
