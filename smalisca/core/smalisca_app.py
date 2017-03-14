@@ -37,7 +37,6 @@ import json
 from smalisca.core.smalisca_config import JSON_SETTINGS
 from smalisca.core.smalisca_logging import log
 
-
 class App:
     """Provides information about an application
 
@@ -167,7 +166,8 @@ class App:
                 'name': c['name'],
                 'type': c['type'],
                 'package': c['package'],
-                'parent': c['parent'],
+                # Some classes are orphans?
+                'parent': c.get('parent'),
                 'path': c['path'],
                 'depth': c['depth']
             })
